@@ -16,3 +16,4 @@ script:
                                      import jinja2
                                    $$;'
   - psql -U postgres -d test -c 'SELECT py_test();'
+
