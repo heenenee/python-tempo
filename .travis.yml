@@ -7,12 +7,11 @@ before_install:
   - sudo apt-get install -y postgresql-contrib-9.4 postgresql-plpython-9.4
   - sudo -u postgres createdb test
   - sudo -u postgres createlang plpython2u test
-install:
-  - pip install jinja2
+  - sudo pip install jinja2
 script:
   - >
-      sudo -u postgres psql -d test -c 'CREATE FUNCTION py_test()
-                                   RETURNS void LANGUAGE plpythonu AS $$
+      sudo -u postgres psql -d test -c 'CREATE OR REPLACE FUNCTION py_test()
+                                   RETURNS void LANGUAGE plpython2u AS $$
                                      import jinja2
                                    $$;'
   - sudo -u postgres psql -d test -c 'SELECT py_test();'
