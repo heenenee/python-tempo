@@ -2,6 +2,7 @@ sudo: required
 language: python
 before_install:
   - sudo apt-get -qq update
+  - sudo /etc/init.d/postgresql stop
   - sudo apt-get install -y postgresql-9.4
   - sudo apt-get install -y postgresql-contrib-9.4 postgresql-plpython-9.4
   - sudo -u postgres createdb test
