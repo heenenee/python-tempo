@@ -1,20 +1,16 @@
 sudo: required
 language: python
-addons:
-  postgresql: "9.4"
-  apt:
-    packages:
-      - postgresql-plpython-9.4
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y postgresql-9.4 postgresql-contrib-9.4 postgresql-plpython-9.4
+  - sudo -u postgres createdb test
+  - sudo -u postgres createlang plpython2u test
 install:
   - pip install jinja2
 script:
-  - psql -U postgres -c 'CREATE DATABASE test;'
-  - psql -U postgres -c 'CREATE EXTENSION plpythonu;'
-  - psql -U postgres -d test -c 'CREATE LANGUAGE plpythonu;'
   - >
-      psql -U postgres -d test -c 'CREATE FUNCTION py_test()
+      sudo -u postgres psql -d test -c 'CREATE FUNCTION py_test()
                                    RETURNS void LANGUAGE plpythonu AS $$
                                      import jinja2
                                    $$;'
-  - psql -U postgres -d test -c 'SELECT py_test();'
-
+  - sudo -u postgres psql -d test -c 'SELECT py_test();'
